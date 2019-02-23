@@ -1,0 +1,109 @@
+        print("ESP Loaded")
+surface.CreateFont("aesp_font", {
+   font = "Arial",
+   size = 15,
+   weight = 50,
+   antialias = true
+})
+
+
+
+	print ("BOX ESP")
+local function DrawText(strText, oCol, iXPos, iYPos)
+	draw.SimpleTextOutlined(strText, "aesp_font", iXPos, iYPos, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+end 
+
+local function MESPCheck(v)
+	if v:Alive() == true && v:Health() ~= 0 && v:Health() >= 0 && v ~= LocalPlayer() && LocalPlayer():Alive() then
+		return true
+	else
+		return false
+	end
+end
+
+
+hook.Add( "HUDPaint", "aimbot.Wallhack", function()
+for k,v in pairs ( player.GetAll() ) do
+ 
+        local Position = ( v:GetPos() + Vector( 0,0,80 ) ):ToScreen()
+        local Name = ""
+ 
+        if v == LocalPlayer() then Name = "" else Name = v:Name() end
+ 
+end
+ 
+end )
+ 
+
+
+local function coordinates( ent )
+local min, max = ent:OBBMins(), ent:OBBMaxs()
+local corners = {
+        Vector( min.x, min.y, min.z ),
+        Vector( min.x, min.y, max.z ),
+        Vector( min.x, max.y, min.z ),
+        Vector( min.x, max.y, max.z ),
+        Vector( max.x, min.y, min.z ),
+        Vector( max.x, min.y, max.z ),
+        Vector( max.x, max.y, min.z ),
+        Vector( max.x, max.y, max.z )
+}
+ 
+local minX, minY, maxX, maxY = ScrW() * 2, ScrH() * 2, 0, 0
+for _, corner in pairs( corners ) do
+        local onScreen = ent:LocalToWorld( corner ):ToScreen()
+        minX, minY = math.min( minX, onScreen.x ), math.min( minY, onScreen.y )
+        maxX, maxY = math.max( maxX, onScreen.x ), math.max( maxY, onScreen.y )
+end
+ 
+return minX, minY, maxX, maxY
+end
+hook.Add("HUDPaint", "Example", function()
+for k,v in pairs(player.GetAll()) do
+        local x1,y1,x2,y2 = coordinates(v)
+         print(tostring(team.GetColor(v:Team())))
+         surface.SetDrawColor(color_white)
+		 
+		 local Pos = (v:GetPos() + Vector(0, 0, 50)):ToScreen()
+ 
+ 
+        surface.DrawLine( x1, y1, math.min( x1 + 5, x2 ), y1 )
+        surface.DrawLine( x1, y1, x1, math.min( y1 + 5, y2 ) )
+ 
+ 
+        surface.DrawLine( x2, y1, math.max( x2 - 5, x1 ), y1 )
+        surface.DrawLine( x2, y1, x2, math.min( y1 + 5, y2 ) )
+ 
+ 
+        surface.DrawLine( x1, y2, math.min( x1 + 5, x2 ), y2 )
+        surface.DrawLine( x1, y2, x1, math.max( y2 - 5, y1 ) )
+ 
+ 
+        surface.DrawLine( x2, y2, math.max( x2 - 5, x1 ), y2 )
+        surface.DrawLine( x2, y2, x2, math.max( y2 - 5, y1 ) )
+
+// Put in you or your friends steam ID's in below in between "" and you can get their name displayed on their player.
+	if v:SteamID() == "///////"
+then DrawText(v:Nick(), team.GetColor(v:Team()), Pos.x, Pos.y +13 * 0)
+
+	if v:SteamID() == "///////"
+then DrawText(v:Nick(), team.GetColor(v:Team()), Pos.x, Pos.y +13 * 0)
+
+
+end
+end
+end
+end
+)
+
+
+local struc = {}
+struc.pos = {}
+struc.pos[1] = 100 -- x pos
+struc.pos[2] = 200 -- y pos
+struc.color = Color(255,0,0,255) -- Red
+struc.text = "Hello World" -- Text
+struc.font = "DefaultFixed" -- Font
+struc.xalign = TEXT_ALIGN_CENTER -- Horizontal Alignment
+struc.yalign = TEXT_ALIGN_CENTER -- Vertical Alignment
+draw.Text( struc )
