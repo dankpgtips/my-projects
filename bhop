@@ -1,0 +1,9 @@
+CreateClientConVar ("bhop", "1" ,"false" ,"true")
+local function Bhop(cmd)
+if GetConVarNumber "bhop" !=1 then return end
+    if (LocalPlayer():Alive() && !LocalPlayer():OnGround() && !LocalPlayer():IsTyping() && LocalPlayer():WaterLevel() < 2 && LocalPlayer():GetMoveType() != 8 && LocalPlayer():GetMoveType() != 9 && LocalPlayer():GetMoveType() != 10) then
+        cmd:RemoveKey(IN_JUMP)
+    end
+end
+ 
+hook.Add("CreateMove", "Bhop", Bhop)
