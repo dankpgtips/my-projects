@@ -1,0 +1,99 @@
+/*
+	__  __                  _             
+	\ \/ /_ __ __ _ _   _  | |_   _  __ _ 
+	 \  /| '__/ _` | | | | | | | | |/ _` |
+	 /  \| | | (_| | |_| |_| | |_| | (_| |
+	/_/\_\_|  \__,_|\__, (_)_|\__,_|\__,_|
+					|___/                 
+		
+	
+		made it so you can easily do "bind x xray!"
+	
+*/
+
+function walii()
+concommand.Add( "xray", function() Wali() surface.PlaySound( "buttons/button1.wav" ) end )
+hook.Remove( "HUDPaint", "name" )
+hook.Add( "HUDPaint", "naem", walii )
+
+	RunConsoleCommand( "r_shadows", "1" )
+	RunConsoleCommand( "r_3dsky", "1" )
+
+	cam.Start3D( EyePos(), EyeAngles() )
+	
+		for k,v in pairs( ents.FindByClass( "prop_physics" ) ) do
+			
+			v.SetMaterial( v, " " )
+			
+		end
+		
+		for k,v in pairs( ents.FindByClass( "viewmodel" ) ) do
+		
+			v.SetMaterial( v, " " )
+			
+		end		
+		
+		for k,v in pairs( player.GetAll() ) do
+
+			v.SetMaterial( v, " " )
+			v.SetColor( v )
+			
+		end
+		
+	cam.End3D()
+		
+end
+
+function Wali()
+concommand.Add( "xray", function() walii() surface.PlaySound( "buttons/button19.wav" ) end )
+hook.Add( "HUDPaint", "name", Wali )
+hook.Remove( "HUDPaint", "naem" )
+
+		RunConsoleCommand( "r_shadows", "0" )
+		RunConsoleCommand( "r_3dsky", "0" )
+			
+		cam.Start3D( EyePos(), EyeAngles() )
+		cam.IgnoreZ( true )
+				
+			for k,v in pairs( ents.FindByClass( "prop_physics" ) ) do
+				if util.IsValidModel( v:GetModel() ) then 
+				
+					render.SuppressEngineLighting( true )
+					render.SetColorModulation( 0, 155, 255 ) 
+					render.SetBlend( 0.8 )
+					v.SetMaterial( v, "models/debug/debugwhite" )
+					v.DrawModel( v )
+					
+				end	
+			end
+			
+			for k,v in pairs( player.GetAll() ) do
+				if v:Alive() then 				
+					render.SuppressEngineLighting( true )
+					render.SetColorModulation( 0, 0, 0 ) 
+					render.SetBlend( 1 )
+					v.SetMaterial( v, "" )
+					v.DrawModel( v )
+					
+				end	
+			end
+				
+		render.SuppressEngineLighting( false )
+		cam.IgnoreZ( false )
+		cam.End3D()
+		
+		cam.Start3D( EyePos(), EyeAngles() )
+		
+			for k,v in pairs( ents.FindByClass( "viewmodel" ) ) do
+				
+				render.SuppressEngineLighting( true )
+				v.SetMaterial( v, "" )
+				
+			end
+			
+		render.SuppressEngineLighting( false ) 
+		cam.End3D()
+
+end
+
+concommand.Add( "xray", function() Wali() surface.PlaySound( "buttons/button1.wav" ) end )
